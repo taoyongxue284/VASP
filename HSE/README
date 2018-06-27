@@ -1,0 +1,13 @@
+Also perform a preconverge PBE
+and change scf/IBZKPT to KPOINTS
+then in the vasprun.xml find KPOINTS.list
+cope and paste them below KPOINTS, and add weight 0
+As for INCAR
+ LHFCALC =  T
+ PRECFOCK  = F
+ HFSCREEN  =  0.2    ! Switch PBE0 to PBE03 or PBE06
+ ALGO  = Damp
+ TIME = 0.4
+
+After getting the vasprum.xml for band 
+use vaspkit to delete the first few Kpoints and replot the band.dat
