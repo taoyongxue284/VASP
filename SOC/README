@@ -1,0 +1,6 @@
+to perform SOC,first run a normal PBE convergence,(opt and scf)
+mv opt/CONTCAR POSCAR
+mv scf/CHG*
+add LOSRBIT ISPIN ICHARGE to another scf/INCAR
+in dft.lst script change std to ncl, because soc is using non-colinear 
+then perform scf, then band
