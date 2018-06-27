@@ -1,0 +1,14 @@
+in the case of hybrid function
+first perform a PBE preconverge
+and cp scf/WAVECAR and CONTAR
+in INCAR, select the B3LYP hybrid function
+LHFCALC = .TRUE. 
+GGA = B3
+AEXX = 0.2 
+AGGAX = 0.72 
+AGGAC = 0.81 
+ALDAC = 0.19
+ALGO = D 
+TIME = 0.4
+
+In the POTCAR, LEXCH=B3
