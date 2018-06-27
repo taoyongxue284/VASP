@@ -1,0 +1,54 @@
+#!/bin/bash
+#BSUB -q normal
+#BSUB -o out%J.txt
+#BSUB -e error%J.txt
+#BSUB -J TaoYX
+#BSUB -n 16
+#BSUB -R "span[ptile=16]"
+##BSUB -R "span[hosts=1]"
+
+#source /share/apps/intel/ipsxe2016/parallel_studio_xe_2016.0.047/psxevars.sh >/dev/null 2>&1
+source /share/apps/intel/ipsxe2015u5/parallel_studio_xe_2015/psxevars.sh >/dev/null 2>&1
+
+#Run MultiTheads per MPI Process
+#-genv OMP_NUM_THREADS 1
+export OMP_NUM_THREADS=1
+
+#Run MPI over infiniband in default
+export vasprun=/share/pub/renwei/software/vasp544/vasp_std
+
+mkdir opt scf band
+cp POSCAR POTCAR INCAR.opt KPOINTS.opt ./opt
+cp POTCAR INCAR.scf KPOINTS.scf ./scf
+cp POTCAR INCAR.band KPOINTS.band ./band
+wait
+
+cd ./opt
+mv INCAR.opt INCAR
+mv KPOINTS.opt KPOINTS
+wait
+mpirun -genv I_MPI_FABRICS shm:tcp -bootstrap lsf  $vasprun
+wait
+cp CONTCAR ../scf/POSCAR
+cp CONTCAR ../band/POSCAR
+rm WAVE* CHG* DOS* EIG*
+wait
+
+cd ../scf
+mv INCAR.scf INCAR
+mv KPOINTS.scf KPOINTS
+wait
+mpirun -genv I_MPI_FABRICS shm:tcp -bootstrap lsf  $vasprun
+wait
+cp CHGCAR ../band
+rm WAVE* CHG
+wait
+
+cd ../band
+mv INCAR.band INCAR
+mv KPOINTS.band KPOINTS
+wait
+mpirun -genv I_MPI_FABRICS shm:tcp -bootstrap lsf  $vasprun
+wait
+rm WAVE* CHG*
+wait
