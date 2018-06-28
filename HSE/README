@@ -1,6 +1,6 @@
 Also perform a preconverge PBE
 and change scf/IBZKPT to KPOINTS
-then in the vasprun.xml find KPOINTS.list
+then in the band/vasprun.xml find KPOINTS.list
 cope and paste them below KPOINTS, and add weight 0
 As for INCAR
  LHFCALC =  T
